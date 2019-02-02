@@ -1,0 +1,25 @@
+{
+  "name": "whmcs-js",
+  "description": "WHMCS API JavaScript Client",
+  "version": "1.0.0",
+  "author": "Víctor Campos <victor@palacioweb.com>",
+  "maintainers": [
+    "DamageESP <victor@palacioweb.com>"
+  ],
+  "contributors": [
+    "Víctor Campos <victor@palacioweb.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DamageESP/whmcs-js.git"
+  },
+  "keywords": [
+    "whmcs",
+    "hosting",
+    "js"
+  ],
+  "dependencies": {
+    "node-fetch": "^2.3.0"
+  },
+  "main": "./index"
+}
