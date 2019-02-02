@@ -127,7 +127,7 @@ const invoices = await myBilling.getInvoices()
 - searchLicense(opts)
 - brandingLicense(action, key)
 
-## Documentation
+## [Documentation](https://damageesp.github.io/whmcs-js/)
 
 ## License
 
