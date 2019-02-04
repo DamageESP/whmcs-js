@@ -17,70 +17,228 @@ class Domains extends WHMCS {
     super(config)
   }
   /**
-   * Get domain lock status - http://docs.whmcs.com/API:Domain_Locking_Status
-   * @param {String|Number} domainid
-   */
-  getDomainLockStatus (domainid) {
-    const options = {
-      action: 'domaingetlockingstatus',
-      domainid: domainid
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Set domain lock status - http://docs.whmcs.com/API:Domain_Update_Lock
-   * @param {String|Number} domainid
-   * @param {String|Number} [status] 1 to lock, 0 to unlock, defaults to 0
-   */
-  setDomainLockStatus (domainid, status) {
-    const options = {
-      action: 'domainupdatelockingstatus',
-      domainid: domainid,
-      lockstatus: status
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Get domain nameservers - http://docs.whmcs.com/API:Domain_Nameservers
-   * @param {String|Number} domainid
-   */
-  getDomainNameservers (domainid) {
-    const options = {
-      action: 'domaingetnameservers',
-      domainid: domainid
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Set domain nameservers - http://docs.whmcs.com/API:Domain_Update_Nameservers
-   * @param {String|Number} domainid
-   * @param {Object|Array} nameservers Pass in an object with ns* properties, or an array of nameservers
-   * @param {String} nameservers.ns1
-   * @param {String} nameservers.ns2
-   * @param {String} [nameservers.ns3]
-   * @param {String} [nameservers.ns4]
-   * @param {String} [nameservers.ns5]
-   */
-  setDomainNameservers (domainid, nameservers) {
-    const options = {
-      action: 'domainupdatenameservers',
-      domainid: domainid
-    }
-
-    if (Array.isArray(nameservers)) {
-      var len = nameservers.length
-      for (var i = 0; i < len; i++) {
-        options['ns' + (i + 1)] = nameservers[i]
-      }
-    } else if (typeof nameservers === 'object') {
-      Object.assign(options, nameservers)
-    }
-
-    return this.callApi(options)
-  }
+	* Connects to the registrar and obtains the nameservers for the domain - https://developers.whmcs.com/api-reference/domaingetnameservers/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the domain to obtain the nameservers for
+	*/
+	domainGetNameservers (opts) {
+		const options = {
+			action: 'DomainGetNameservers',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to toggle the ID Protect state - https://developers.whmcs.com/api-reference/domaintoggleidprotect/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the domain to toggle ID Protection for
+	* @param {Boolean} [opts.idprotect] Should ID Protection be turned on
+	*/
+	domainToggleIdProtect (opts) {
+		const options = {
+			action: 'DomainToggleIdProtect',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and obtains the whois information for the domain - https://developers.whmcs.com/api-reference/domaingetwhoisinfo/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the domain to obtain the whois information for
+	*/
+	domainGetWhoisInfo (opts) {
+		const options = {
+			action: 'DomainGetWhoisInfo',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to register the domain. - https://developers.whmcs.com/api-reference/domainregister/
+	* @param {Object} opts
+	* @param {Number} [opts.domainid] The id of the domain to register recommended
+	* @param {String} [opts.domain] The domain name to be registered. This or $domainid is required
+	*/
+	domainRegister (opts) {
+		const options = {
+			action: 'DomainRegister',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and obtains the current lock status of the domain - https://developers.whmcs.com/api-reference/domaingetlockingstatus/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the domain to obtain the lock status for
+	*/
+	domainGetLockingStatus (opts) {
+		const options = {
+			action: 'DomainGetLockingStatus',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to obtain the EPP Code for the domain.
+Not all registrars return the EPP code but send them directly to the client. - https://developers.whmcs.com/api-reference/domainrequestepp/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the domain to obtain the EPP for
+	*/
+	domainRequestEPP (opts) {
+		const options = {
+			action: 'DomainRequestEPP',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to update the WHOIS Information - https://developers.whmcs.com/api-reference/domainupdatewhoisinfo/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the domain to update the whois information for
+	* @param {String} opts.xml The xml of the details to update. See DomainGetWhoisInfo
+	*/
+	domainUpdateWhoisInfo (opts) {
+		const options = {
+			action: 'DomainUpdateWhoisInfo',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to update the lock - https://developers.whmcs.com/api-reference/domainupdatelockingstatus/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the domain to update the locking status for
+	* @param {Boolean} [opts.lockstatus] Should the domain lock be turned on
+	*/
+	domainUpdateLockingStatus (opts) {
+		const options = {
+			action: 'DomainUpdateLockingStatus',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to release the domain. - https://developers.whmcs.com/api-reference/domainrelease/
+	* @param {Object} opts
+	* @param {Number} [opts.domainid] The id of the domain to be released recommended
+	* @param {String} [opts.domain] The domain name to be released. This or $domainid is required
+	* @param {String} opts.newtag The receiving tag for the domain
+	*/
+	domainRelease (opts) {
+		const options = {
+			action: 'DomainRelease',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Retrieve domain whois information. - https://developers.whmcs.com/api-reference/domainwhois/
+	* @param {Object} opts
+	* @param {String} opts.domain The domain name to lookup
+	*/
+	domainWhois (opts) {
+		const options = {
+			action: 'DomainWhois',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to update the nameservers with those provided. - https://developers.whmcs.com/api-reference/domainupdatenameservers/
+	* @param {Object} opts
+	* @param {Number} [opts.domainid] The id of the domain to update the nameservers for recommended
+	* @param {String} [opts.domain] The domain name to be update the nameservers for. This or $domainid is required
+	* @param {String} opts.ns1 The first nameserver
+	* @param {String} opts.ns2 The second nameserver
+	* @param {String} [opts.ns3] The third nameserver
+	* @param {String} [opts.ns4] The fourth nameserver
+	* @param {String} [opts.ns5] The fifth nameserver
+	*/
+	domainUpdateNameservers (opts) {
+		const options = {
+			action: 'DomainUpdateNameservers',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Retrieve TLD pricing - https://developers.whmcs.com/api-reference/gettldpricing/
+	* @param {Object} opts
+	* @param {Number} [opts.currencyid] The currency ID to fetch pricing for
+	* @param {Number} [opts.clientid] The id of the client to fetch pricing for. Pass one or the other. clientid being passed will override currencyid
+	*/
+	getTLDPricing (opts) {
+		const options = {
+			action: 'GetTLDPricing',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to renew the domain. - https://developers.whmcs.com/api-reference/domainrenew/
+	* @param {Object} opts
+	* @param {Number} [opts.domainid] The id of the domain to be renewed recommended
+	* @param {String} [opts.domain] The domain name to be renewed. This or $domainid is required
+	* @param {Number} [opts.regperiod] How long to renew the domain for. Defaults to the current stored value.
+	*/
+	domainRenew (opts) {
+		const options = {
+			action: 'DomainRenew',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Connects to the registrar and attempts to start the transfer process. - https://developers.whmcs.com/api-reference/domaintransfer/
+	* @param {Object} opts
+	* @param {Number} [opts.domainid] The id of the domain to be transferred recommended
+	* @param {String} [opts.domain] The domain name to be transferred. This or $domainid is required
+	* @param {Number} [opts.eppcode] Provide a new EPP Code for the Transfer Request
+	*/
+	domainTransfer (opts) {
+		const options = {
+			action: 'DomainTransfer',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Updates a Client Domain - https://developers.whmcs.com/api-reference/updateclientdomain/
+	* @param {Object} opts
+	* @param {Number} opts.domainid The id of the client domain to update
+	* @param {Boolean} [opts.dnsmanagement] Enable/Disable DNS Management
+	* @param {Boolean} [opts.emailforwarding] Enable/Disable Email Forwarding
+	* @param {Boolean} [opts.idprotection] Enable/Disable ID Protection
+	* @param {Boolean} [opts.donotrenew] Enable/Disable Do Not Renew
+	* @param {String} [opts.type] The type of domain order. (‘Register’, ‘Transfer’)
+	* @param {String} [opts.regdate] The registration date of the domain (Y-m-d)
+	* @param {String} [opts.nextduedate] The next due date of the domain (Y-m-d)
+	* @param {String} [opts.expirydate] The expiry date of the domain (Y-m-d)
+	* @param {String} [opts.domain] The domain name to be changed to
+	* @param {Number} [opts.firstpaymentamount] The first payment amount on the domain
+	* @param {Number} [opts.recurringamount] The recurring amount for automatic renewal invoices
+	* @param {String} [opts.registrar] The registrar to associate with the domain
+	* @param {Number} [opts.regperiod] The registration period of the domain
+	* @param {String} [opts.paymentmethod] The payment method to associate in system format (eg paypal)
+	* @param {String} [opts.subscriptionid] The subscription ID to associate with the domain
+	* @param {String} [opts.status] The status to change the domain to
+	* @param {String} [opts.notes] The admin notes for the domain
+	* @param {Number} [opts.promoid] The promotion Id to associate
+	* @param {Boolean} [opts.autorecalc] Should the recurring amount of the domain be automatically recalculated (this will ignore any passed $recurringamount)
+	* @param {Boolean} [opts.updatens] Should the nameservers be updated at the registrar
+	* @param {String} [opts.ns1] The first nameserver to save
+	* @param {String} [opts.ns2] The second nameserver to save
+	* @param {String} [opts.ns3] The third nameserver to save
+	* @param {String} [opts.ns4] The fourth nameserver to save
+	* @param {String} [opts.ns5] The fifth nameserver to save
+	*/
+	updateClientDomain (opts) {
+		const options = {
+			action: 'UpdateClientDomain',
+			...opts
+		}
+		return this.callApi(options)
+	}
 }
 
 module.exports = Domains

@@ -17,135 +17,200 @@ class Support extends WHMCS {
     super(config)
   }
   /**
-   * Open ticket - http://docs.whmcs.com/API:Open_Ticket
-   * @param {String|Number} clientid
-   * @param {Number} deptid
-   * @param {String} subject
-   * @param {String} message
-   * @param {Object} [opts]
-   * @param {String} [opts.priority] Low, Medium, High, etc. (Default = Low)
-   * @param {String|Number} [opts.contactid] ID of the contact to associate the ticket with
-   * @param {String} [opts.name] Required if not a registered client (clientid must be set to 0)
-   * @param {String} [opts.email] Rquired if not a registered client
-   * @param {String} [opts.admin]
-   * @param {String} [opts.serviceid]
-   * @param {String} [opts.domainid]
-   * @param {String} [opts.customfields] Base 64 serialized array of field IDs => values
-   * @param {Boolean} [opts.noemail]
+   * Adds an announcement. - https://developers.whmcs.com/api-reference/addannouncement/
+   * @param {Object} opts
+   * @param {String} opts.date Date in the format YYYY-MM-DD HH:MM:SS
+   * @param {String} opts.title 
+   * @param {String} opts.announcement Announcement text
+   * @param {Boolean} [opts.published] Pass as true to publish
    */
-  openTicket (clientid, deptid, subject, message, opts) {
+  addAnouncement (opts) {
     const options = {
-      action: 'openticket',
-      clientid: clientid,
-      deptid,
-      subject,
-      message
+      action: 'AddAnouncement',
+      ...opts
     }
-
-    Object.assign(options, opts)
-
     return this.callApi(options)
   }
-
   /**
-  * Delete ticket - http://docs.whmcs.com/API:Delete_Ticket
-  * @param {String|Number} ticketid
-  */
-  deleteTicket (ticketid) {
-    const options = {
-      action: 'deleteticket',
-      ticketid
-    }
-
-    return this.callApi(options)
+	* Adds a Cancellation Request - https://developers.whmcs.com/api-reference/addcancelrequest/
+	* @param {Object} opts
+	* @param {Number} opts.serviceid The Service ID to cancel
+	* @param {String} [opts.type] The type of cancellation. ‘Immediate’ or ‘End of Billing Period’
+	* @param {String} [opts.reason] The customer reason for cancellation
+	*/
+	addCancelRequest (opts) {
+		const options = {
+			action: 'AddCancelRequest',
+			...opts
+		}
+		return this.callApi(options)
   }
-
   /**
-   * Get ticket - http://docs.whmcs.com/API:Get_Ticket
-   * @param {String|Number} ticketid
-   */
-  getTicket (ticketid) {
-    const options = {
-      action: 'getticket',
-      ticketid
-    }
-
-    return this.callApi(options)
+	* Adds a Client Note - https://developers.whmcs.com/api-reference/addclientnote/
+	* @param {Object} opts
+	* @param {Number} opts.userid The Client ID to apply the note to
+	* @param {String} opts.notes The note to add
+	* @param {Boolean} [opts.sticky] Should the note be made sticky. Makes the note ‘sticky’ and displays the note throughout the client’s account and on any tickets they submit in the admin area
+	*/
+	addClientNote (opts) {
+		const options = {
+			action: 'AddClientNote',
+			...opts
+		}
+		return this.callApi(options)
   }
-
   /**
-   * Reply to ticket - http://docs.whmcs.com/API:Reply_Ticket
-   * @param {String|Number} ticketid
-   * @param {String} message
-   * @param {Object} [opts]
-   * @param {String|Number} [opts.clientid] Required if adding reply as a client
-   * @param {String|Number} [opts.contactid] ID of contact for client if replying as a client
-   * @param {String} [opts.name] Required to be set to 0 if not a registered client
-   * @param {String} [opts.email] Required if not a registered client
-   * @param {String} [opts.adminusername] Name to show on message
-   * @param {String} [opts.status]
-   * @param {String} [opts.customfields] Base64 encoded serialized array of custom fields
-   */
-  replyTicket (ticketid, message, opts) {
-    const options = {
-      action: 'addticketreply',
-      ticketid,
-      message
-    }
-
-    Object.assign(options, opts)
-
-    if(!options.adminusername && !options.clientid){
-      options.adminusername = 'Auto-response'
-    }
-
-    return this.callApi(options)
+	* Add a note to a ticket by Ticket ID or Ticket Number. - https://developers.whmcs.com/api-reference/addticketnote/
+	* @param {Object} opts
+	* @param {String} opts.message The content of the ticket note
+	* @param {String} [opts.ticketnum] The Client Ticket Number ID to apply the note to
+	* @param {Number} [opts.ticketid] The id of the ticket in the database. Either $ticketnum or $ticketid is required
+	* @param {Boolean} [opts.markdown] Should markdown be used on the ticket note output
+	* @param {Array} [opts.attachments] Optional base64 json encoded array of file attachments. Can be the direct output of a multipart-form-data form submission ($_FILES superglobal in PHP) or an array of arrays consisting of both a filename and data keys (see example below).
+	*/
+	addTicketNote (opts) {
+		const options = {
+			action: 'AddTicketNote',
+			...opts
+		}
+		return this.callApi(options)
   }
-
   /**
-  * Get tickets - http://docs.whmcs.com/API:Get_Tickets
-  * @param {Object} [opts]
-  * @param {String} [opts.limitstart] where to start the records. Used for pagination
-  * @param {String} [opts.limitnum] the number of records to retrieve. Default = 25
-  * @param {String} [opts.clientid]
-  * @param {String} [opts.email]
-  * @param {String} [opts.deptid]
-  * @param {String} [opts.status]
-  * @param {String} [opts.subject]
-  * @param [opts.ignore_dept_assignments] Boolean
-  */
-  getTickets (opts) {
-    const options = {
-      action: 'gettickets'
-    }
-
-    Object.assign(options, opts)
-
-    return this.callApi(options)
+	* Add a reply to a ticket by Ticket ID. - https://developers.whmcs.com/api-reference/addticketreply/
+	* @param {Object} opts
+	* @param {Number} opts.ticketid The id of the ticket in the database. Either $ticketnum or $ticketid is required
+	* @param {String} opts.message The content of the ticket reply
+	* @param {Boolean} [opts.markdown] Should markdown be used on the ticket reply output
+	* @param {Number} [opts.clientid] Pass a clientid to associate the ticket reply with a specific client
+	* @param {Number} [opts.contactid] Pass a contactid to associate the ticket reply with a specific contact belonging to $clientid
+	* @param {String} [opts.adminusername] The admin username to associate the ticket reply with
+	* @param {String} [opts.name] The name to associate with the ticket reply if not an admin or client response
+	* @param {String} [opts.email] The email to associate with the ticket reply if not an admin or client response
+	* @param {String} [opts.status] The status to set on the ticket after the reply is made if the default status on admin/client response is not required. See GetSupportStatuses API command
+	* @param {Boolean} [opts.noemail] Set to true to stop the ticket reply email being sent
+	* @param {String} [opts.customfields] A base64 encoded array of the custom fields to update
+	* @param {Array} [opts.attachments] Optional base64 json encoded array of file attachments. Can be the direct output of a multipart-form-data form submission ($_FILES superglobal in PHP) or an array of arrays consisting of both a filename and data keys (see example below).
+	*/
+	addTicketReply (opts) {
+		const options = {
+			action: 'AddTicketReply',
+			...opts
+		}
+		return this.callApi(options)
   }
-
   /**
-  * Update ticket - http://docs.whmcs.com/API:Update_Ticket
-  * @param {Object} opts
-  * @param {String} opts.ticketid ID of the ticket to update
-  * @param {String} [opts.deptid] Update the assigned department
-  * @param {String} [opts.subject] Update the subject of the ticket
-  * @param {String} [opts.priority] Low, Medium, High
-  * @param {String} [opts.status] Open, Answered, Closed, etc.
-  * @param {String} [opts.userid] Change the user that the ticket is assigned to
-  * @param {String} [opts.email] Change the email address that opened the ticket (only when userid is not used)
-  * @param {String} [opts.cc] Add CC emails to the ticket
-  * @param {String} [opts.flag] Flag to an adminid
-  */
-  updateTicket (opts) {
-    const options = {
-      action: 'updateticket'
-    }
-
-    Object.assign(options, opts)
-
-    return this.callApi(options)
+	* Delete an announcement - https://developers.whmcs.com/api-reference/deleteannouncement/
+	* @param {Object} opts
+	* @param {Number} opts.announcementid The id of the announcement to be deleted
+	*/
+	deleteAnnouncement (opts) {
+		const options = {
+			action: 'DeleteAnnouncement',
+			...opts
+		}
+		return this.callApi(options)
   }
+  /**
+	* Removes a ticket and all replies from the system. This cannot be undone. - https://developers.whmcs.com/api-reference/deleteticket/
+	* @param {Object} opts
+	* @param {Number} opts.ticketid The ticket to be deleted
+	*/
+	deleteTicket (opts) {
+		const options = {
+			action: 'DeleteTicket ',
+			...opts
+		}
+		return this.callApi(options)
+	}
+  /**
+	* Removes a ticket note from the system. This cannot be undone. - https://developers.whmcs.com/api-reference/deleteticketnote/
+	* @param {Object} opts
+	* @param {Number} opts.noteid The ticket note to be deleted
+	*/
+	deleteTicketNote (opts) {
+		const options = {
+			action: 'DeleteTicketNote ',
+			...opts
+		}
+		return this.callApi(options)
+  }
+  /**
+	* Obtain an array of announcements - https://developers.whmcs.com/api-reference/getannouncements/
+	* @param {Object} opts
+	* @param {Number} [opts.limitstart] The offset for the returned announcement data (default: 0)
+	* @param {Number} [opts.limitnum] The number of records to return (default: 25)
+	*/
+	getAnnouncements (opts) {
+		const options = {
+			action: 'GetAnnouncements',
+			...opts
+		}
+		return this.callApi(options)
+  }
+  /**
+	* Open a new ticket - https://developers.whmcs.com/api-reference/openticket/
+	* @param {Object} opts
+	* @param {Number} opts.deptid The department to open the ticket in
+	* @param {String} opts.subject The subject of the ticket
+	* @param {String} opts.message The message of the ticket
+	* @param {Number} [opts.clientid] If applicable, the Client ID to create the ticket for.
+	* @param {Number} [opts.contactid] If applicable, the Contact ID to create the ticket for (only if $clientid is passed).
+	* @param {String} [opts.name] The name of the person opening the ticket (if not a client)
+	* @param {String} [opts.email] The email address of the person opening the ticket (if not a client)
+	* @param {String} [opts.priority] The priority of the ticket (‘Low’, ‘Medium’, ‘High’)
+	* @param {Number} [opts.serviceid] The service to associate the ticket with (only one of $serviceid or $domainid)
+	* @param {Number} [opts.domainid] The domain to associate the ticket with (only one of $serviceid or $domainid)
+	* @param {Boolean} [opts.admin] Is an Admin opening the ticket
+	* @param {Boolean} [opts.markdown] Should markdown be used on the ticket output
+	* @param {String} [opts.customfields] Base64 encoded serialized array of custom field values
+	* @param {Array} [opts.attachments] Optional base64 json encoded array of file attachments. Can be the direct output of a multipart-form-data form submission ($_FILES superglobal in PHP) or an array of arrays consisting of both a filename and data keys (see example below).
+	*/
+	openTicket (opts) {
+		const options = {
+			action: 'OpenTicket',
+			...opts
+		}
+		return this.callApi(options)
+  }
+  /**
+	* Updates an existing ticket - https://developers.whmcs.com/api-reference/updateticket/
+	* @param {Object} opts
+	* @param {Number} opts.ticketid The ticket Id to update
+	* @param {Number} [opts.deptid] The department id of the ticket
+	* @param {String} [opts.status] The status of the ticket
+	* @param {String} [opts.subject] The subject of the ticket
+	* @param {Number} [opts.userid] If applicable, the Client ID to update the ticket for.
+	* @param {String} [opts.name] The name of the person opening the ticket (if not a client)
+	* @param {String} [opts.email] The email address of the person opening the ticket (if not a client)
+	* @param {String} [opts.cc] The cc email addresses for the ticket
+	* @param {String} [opts.priority] The priority of the ticket (‘Low’, ‘Medium’, ‘High’)
+	* @param {Number} [opts.flag] The id of the admin to flag the ticket to
+	* @param {Boolean} [opts.removeFlag] Remove the flag from the ticket
+	* @param {String} [opts.message] Update the ticket message
+	* @param {Boolean} [opts.markdown] Should markdown be used on the ticket output.
+	* @param {String} [opts.customfields] Base64 encoded serialized array of custom field values
+	*/
+	updateTicket (opts) {
+		const options = {
+			action: 'UpdateTicket',
+			...opts
+		}
+		return this.callApi(options)
+  }
+  /**
+	* Updates a ticket reply message. - https://developers.whmcs.com/api-reference/updateticketreply/
+	* @param {Object} opts
+	* @param {Number} opts.replyid The reply id to update.
+	* @param {String} opts.message The message to be updated
+	* @param {Boolean} [opts.markdown] Should markdown be used on the ticket message. Existing value is used if not supplied.
+	*/
+	updateTicketReply (opts) {
+		const options = {
+			action: 'UpdateTicketReply',
+			...opts
+		}
+		return this.callApi(options)
+	}
 }
 
 module.exports = Support

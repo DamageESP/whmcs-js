@@ -17,210 +17,392 @@ class Billing extends WHMCS {
     super(config)
   }
   /**
-   * Add order - http://docs.whmcs.com/API:Add_Order
-   * @param {string|number} clientid
-   * @param {Object} order
-   * @param {string|number} order.clientid Client id for order
-   * @param {string|number} order.pid Product id
-   * @param {string} order.domain Domain name
-   * @param {string} order.billingcycle
-   * @param {string} order.domaintype Set for domain registration, register or transfer
-   * @param {string} order.regperiod
-   * @param {string} order.eppcode
-   * @param {string} order.paymentmethod
-   * @param {string} [order.customfields] Base64 encoded serialized array of custom field values
-   * @param {string} [order.configoptions] Base64 encoded serialized array of configurable product options
-   * @param {string} [order.priceoverride]
-   * @param {string} [order.promocode]
-   * @param {string} [order.promooverride]
-   * @param {string} [order.affid]
-   * @param {boolean} [order.noinvoice]
-   * @param {boolean} [order.noinvoiceemail] 
-   * @param {boolean} [order.noemail]
-   * @param {string} [order.clientip]
-   * @param {string} [order.addons] Comma separated list of addon ids
-   * @param {string} [order.hostname] Hostname of the server
-   * @param {string} [order.ns1prefix] Prefix to be used for the NS1 nameserver
-   * @param {string} [order.ns2prefix] Prefix to be used for the NS2 nameserver
-   * @param {string} [order.rootpw] Root password for the server
-   * @param {string} [order.contactid] the ID of a contact to use for the domain registrant details
-   * @param {boolean} [order.dnsmanagement]  True to enable
-   * @param {string} [order.domainfields] Base64 encoded serialized array of the TLD specific field values
-   * @param {boolean} [order.emailforwarding]  True to enable
-   * @param {boolean} [order.idprotection]  True to enable
-   * @param {string} [order.nameserver1] Domain registration only
-   * @param {string} [order.nameserver2] Domain registration only
-   * @param {string} [order.nameserver3] Domain registration only
-   * @param {string} [order.nameserver4] Domain registration only
-   * @param {Object} [order.domainrenewals] Object Name:value of domain to regperiod
-   */
-  addOrder (clientid, order) {
-    const options = {
-      action: 'addorder',
-      clientid: clientid
-    }
-
-    Object.assign(options, order)
-
-    return this.callApi(options)
-  }
-  createInvoice (clientid, invoice) {
-    const options = {
-      action: 'createinvoice',
-      userid: clientid
-    }
-
-    Object.assign(options, invoice)
-
-    return this.callApi(options)
-  }
-  /**
-   * Accept order - http://docs.whmcs.com/API:Accept_Order
-   * @param {String|Number} orderid
-   * @param {Object} [opts]
-   * @param {String} [opts.serverid]
-   * @param {String} [opts.serviceusername]
-   * @param {String} [opts.servicepassword]
-   * @param {String} [opts.registrar]
-   * @param {Boolean} [opts.autosetup]
-   * @param {Boolean} [opts.sendregistrar]
-   * @param {Boolean} [opts.sendemail]
-   */
-  acceptOrder (orderid, opts) {
-    const options = {
-      action: 'acceptorder',
-      orderid: orderid
-    }
-
-    Object.assign(options, opts)
-
-    return this.callApi(options)
-  }
-  /**
-  * Delete order - http://docs.whmcs.com/API:Cancel_Order
-  * @param {String|Number} orderid
-  */
-  deleteOrder (orderid) {
-    const options = {
-      action: 'deleteorder',
-      orderid: orderid
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Cancel order - http://docs.whmcs.com/API:Cancel_Order
-   * @param {String|Number} orderid
-   */
-  cancelOrder (orderid) {
-    const options = {
-      action: 'cancelorder',
-      orderid: orderid
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Add credit - http://docs.whmcs.com/API:Add_Credit
-   * @param {String|Number} clientid
-   * @param {String|Number} amount
-   * @param {String} description
-   */
-  addCredit (clientid, amount, description = 'Added via API') {
-    const options = {
-      action: 'addcredit',
-      clientid,
-      amount,
-      description
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Apply Credit - http://docs.whmcs.com/API:Apply_Credit
-   * @param {String|Number} invoiceid
-   * @param {String|Number} [amount]
-   */
-  applyCredit (invoiceid, amount = 'full') {
-    const options = {
-      action: 'applycredit',
-      invoiceid,
-      amount
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Get invoice - http://docs.whmcs.com/API:Get_Invoice
-   * @param invoiceid
-   */
-  getInvoice (invoiceid) {
-    const options = {
-      action: 'getinvoice',
-      invoiceid: invoiceid
-    }
-
-    return this.callApi(options)
-  }
-  /**
-   * Get invoices - http://docs.whmcs.com/API:Get_Invoices
-   * @param {String|Number} userid
-   * @param {Object} [opts]
-   * @param {String} [opts.userid]
-   * @param {String} [opts.status] Status to filter for: Paid, Unpaid, Cancelled, Overdue, etc.
-   * @param {String} [opts.limitstart]
-   * @param {String} [opts.limitnum] Default is 25
-   */
-  getInvoices (opts) {
-    let options = {
-      action: 'getinvoices'
-    }
-    Object.assign(options, opts)
-
-    return this.callApi(options)
-  }
-  /**
-   * Update invoice - http://docs.whmcs.com/API:Update_Invoice
-   * @param {String|Number} invoiceid Invoice ID
-   * @param {object} [opts]
-   * @param {Array} [opts.itemdescription] Array of existing line item descriptions to update. Line ID from database needed, itemamount and itemtaxed should be passed when updating the description
-   * @param {Array} [opts.itemamount] Array of existing line item amounts to update
-   * @param {Array} [opts.itemtaxed] Array of existing line items taxed or not
-   * @param {Array} [opts.newitemdescription] Array of new line item descriptipons to add
-   * @param {Array} [opts.newitemamount] Array of new line item amounts
-   * @param {Array} [opts.newitemtaxed] Array of new line items taxed or not
-   * @param {String} [opts.date] Date of invoice format yyyymmdd
-   * @param {String} [opts.duedate] Due date of invoice format yyyymmdd
-   * @param {String} [opts.datepaid] Date invoice was paid format yyyymmdd
-   * @param {String} [opts.status] Unpaid, Paid, Cancelled, Collection, Refunded, etc.
-   * @param {String} [opts.paymentmethod]
-   * @param {String} [opts.notes]
-   * @param {Array} [opts.deletelineids] Array of line IDs for the current invoice to remove (tblinvoiceitems.id)
-   */
-  updateInvoice (invoiceid, opts) {
-    const options = {
-      action: 'updateinvoice',
-      invoiceid: invoiceid
-    }
-    Object.assign(options, opts)
-
-    return this.callApi(options)
-  }
-  /**
-   * Capture payment - http://docs.whmcs.com/API:Capture_Payment
-   * @param {String|Number} invoiceid
-   * @param {Object} [opts]
-   * @param {String} [opts.cvv]
-   */
-  capturePayment (invoiceid, opts) {
-    const options = {
-      action: 'capturepayment',
-      invoiceid: invoiceid
-    }
-    Object.assign(options, opts)
-
-    return this.callApi(options)
-  }
+	* Accepts a quote - https://developers.whmcs.com/api-reference/acceptquote/
+	* @param {Object} opts
+	* @param {Number} opts.quoteid The quote id to be accepted and converted to an invoice
+	*/
+	acceptQuote (opts) {
+		const options = {
+			action: 'AcceptQuote',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Applies the Client’s Credit to an invoice - https://developers.whmcs.com/api-reference/applycredit/
+	* @param {Object} opts
+	* @param {Number} opts.invoiceid The ID of the invoice to apply credit
+	* @param {Number} [opts.amount] string
+	* @param {Boolean} [opts.noemail] Set to true to stop the invoice payment email being sent if the invoice becomes paid
+	*/
+	applyCredit (opts) {
+		const options = {
+			action: 'ApplyCredit',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Adds a Billable Item - https://developers.whmcs.com/api-reference/addbillableitem/
+	* @param {Object} opts
+	* @param {Number} opts.clientid The client to add the item to
+	* @param {String} opts.description The description of the Billable Item. This will appear on the invoice
+	* @param {Number} opts.amount the total amount to invoice for
+	* @param {String} [opts.invoiceaction] One of ‘noinvoice’, ‘nextcron’, ‘nextinvoice’, ‘duedate’, ‘recur’
+	* @param {Number} [opts.recur] When $invoiceaction=recur. The frequency of the recurrence.
+	* @param {String} [opts.recurcycle] How often to recur the Billable Item. Days, Weeks, Months or Years.
+	* @param {Number} [opts.recurfor] How many times the Billable Item should create an invoice.
+	* @param {String} [opts.duedate] Date the invoice should be due (only required for duedate & recur invoice actions). YYYY-mm-dd
+	* @param {Number} [opts.hours] number of hours/quantity the item corresponds to. (not required for single quantities)
+	*/
+	addBillableItem (opts) {
+		const options = {
+			action: 'AddBillableItem',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Add a transaction to the system - https://developers.whmcs.com/api-reference/addtransaction/
+	* @param {Object} opts
+	* @param {String} opts.paymentmethod The payment method of the transaction in system format
+	* @param {Number} [opts.userid] The ID of the user to apply the transaction to
+	* @param {Number} [opts.invoiceid] The ID of the invoice the transaction is for
+	* @param {String} [opts.transid] The unique transaction id for this payment
+	* @param {String} [opts.date] The date of the transaction in your Localisation Format (eg DD/MM/YYYY)
+	* @param {Number} [opts.currencyid] The currency id for the transaction if not associated with a user
+	* @param {String} [opts.description] The description of the transaction
+	* @param {Number} [opts.amountin] The amount received by the payment
+	* @param {Number} [opts.fees] The amount of fee charged on the transaction by the merchant - This can be negative
+	* @param {Number} [opts.amountout] The amount paid out by the payment
+	* @param {Number} [opts.rate] The exchange rate for the payment based on the default currency
+	* @param {Boolean} [opts.credit] Should the payment be applied to credit on the client account. Invoice ID must not be provided.
+	*/
+	addTransaction (opts) {
+		const options = {
+			action: 'AddTransaction',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Create an invoice using the provided parameters. - https://developers.whmcs.com/api-reference/createinvoice/
+	* @param {Object} opts
+	* @param {Number} opts.userid The ID of the client to close
+	* @param {String} [opts.status] The status of the invoice being created (Defaults to Unpaid)
+	* @param {Boolean} [opts.draft] Should the invoice be created in draft status (No need to pass $status also)
+	* @param {Boolean} [opts.sendinvoice] Should the Invoice Created Email be sent to the client (cannot be used with $draft)
+	* @param {String} [opts.paymentmethod] The payment method of the created invoice in system format
+	* @param {Number} [opts.taxrate] The first level tax rate to apply to the invoice to override the system default
+	* @param {Number} [opts.taxrate2] The second level tax rate to apply to the invoice to override the system default
+	* @param {String} [opts.date] The date that the invoice should show as created YYYY-mm-dd
+	* @param {String} [opts.duedate] The due date of the newly created invoice YYYY-mm-dd
+	* @param {String} [opts.notes] The notes to appear on the created invoice
+	* @param {String} [opts.itemdescriptionx] The line items description X is an integer to add multiple invoice items
+	* @param {Number} [opts.itemamountx] The line items amount
+	* @param {Boolean} [opts.itemtaxedx] The line items is taxed value
+	* @param {Boolean} [opts.autoapplycredit] Should credit on the client account be automatically applied to the invoice
+	*/
+	createInvoice (opts) {
+		const options = {
+			action: 'CreateInvoice',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Adds credit to a given client. - https://developers.whmcs.com/api-reference/addcredit/
+	* @param {Object} opts
+	* @param {Number} opts.clientid 
+	* @param {String} opts.description Admin only notes for credit justification
+	* @param {Number} opts.amount 
+	*/
+	addCredit (opts) {
+		const options = {
+			action: 'AddCredit',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Generate any invoices that are due to be generated - https://developers.whmcs.com/api-reference/geninvoices/
+	* @param {Object} opts
+	* @param {Boolean} [opts.noemails] Stop any invoice created emails being sent
+	* @param {Number} [opts.clientid] Pass to generate invoices only for a single client id
+	* @param {Array.<Number>} [opts.serviceids] An array of service ids to generate invoices for
+	* @param {Array.<Number>} [opts.domainids] An array of domain ids to generate invoices for
+	* @param {Array.<Number>} [opts.addonids] An array of addon ids to generate invoices for
+	*/
+	genInvoices (opts) {
+		const options = {
+			action: 'GenInvoices',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Adds payment to a given invoice. - https://developers.whmcs.com/api-reference/addinvoicepayment/
+	* @param {Object} opts
+	* @param {Number} opts.invoiceid 
+	* @param {String} opts.transid The unique transaction id that should be applied to the payment
+	* @param {String} opts.gateway the gateway used in system name format, eg. paypal, authorize
+	* @param {String} [opts.date] The date that the payment should have assigned. Format: YYYY-MM-DD HH:mm:ss
+	* @param {Number} [opts.amount] the amount paid, can be left undefined to take full amount of invoice
+	* @param {Number} [opts.fees] the amount of the payment that was taken as a fee by the gateway
+	* @param {Boolean} [opts.noemail] set to true to not send an email for the invoice payment
+	*/
+	addInvoicePayment (opts) {
+		const options = {
+			action: 'AddInvoicePayment',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Attempt to capture a payment on an unpaid CC Invoice - https://developers.whmcs.com/api-reference/capturepayment/
+	* @param {Object} opts
+	* @param {Number} opts.invoiceid The ID of the pending order
+	* @param {} [opts.cvv] string The CVV Number for the card being attempted
+	*/
+	capturePayment (opts) {
+		const options = {
+			action: 'CapturePayment',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Retrieve a list of invoices. - https://developers.whmcs.com/api-reference/getinvoices/
+	* @param {Object} opts
+	* @param {Number} [opts.limitstart] The offset for the returned invoice data (default: 0)
+	* @param {Number} [opts.limitnum] The number of records to return (default: 25)
+	* @param {Number} [opts.userid] Find invoices for a specific client id
+	* @param {String} [opts.status] Find invoices for a specific status. Standard Invoice statuses plus Overdue
+	* @param {String} [opts.orderby] The field to sort results by. Accepted values are: id, invoicenumber, date, duedate, total, status
+	* @param {String} [opts.order] Order sort attribute. Accepted values are: asc or desc.
+	*/
+	getInvoices (opts) {
+		const options = {
+			action: 'GetInvoices',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Removes a quote from the system. This cannot be undone - https://developers.whmcs.com/api-reference/deletequote/
+	* @param {Object} opts
+	* @param {Number} opts.quoteid The quote id to be deleted
+	*/
+	deleteQuote (opts) {
+		const options = {
+			action: 'DeleteQuote',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Creates a new quote - https://developers.whmcs.com/api-reference/createquote/
+	* @param {Object} opts
+	* @param {String} opts.subject The subject of the new quote
+	* @param {String} opts.stage The current stage of the quote (‘Draft’,‘Delivered’,‘On Hold’,‘Accepted’,‘Lost’,‘Dead’)
+	* @param {String} opts.validuntil The date the quote is valid until in localised format (eg DD/MM/YYYY)
+	* @param {String} [opts.datecreated] The date the quote was created in localised format (eg DD/MM/YYYY)
+	* @param {Array} [opts.lineitems] A base64 encoded serialized array containing the following keys:
+	* @param {String} [opts.lineitems[x][desc]] For $lineitems. The description of the line item
+	* @param {Number} [opts.lineitems[x][qty]] For $lineitems. The quantity of the line item being quoted for
+	* @param {Number} [opts.lineitems[x][up]] For $lineitems. The Unit Price of the line item
+	* @param {Number} [opts.lineitems[x][discount]] For $lineitems. The amount of discount to provide on the line items
+	* @param {Boolean} [opts.lineitems[x][taxable]] For $lineitems. Is the line item taxable
+	* @param {Number} [opts.userid] If the quote is for an exising client, the client ID the quote is for
+	* @param {String} [opts.firstname] The first name of the client the quote is for if no $userid
+	* @param {String} [opts.lastname] The last name of the client the quote is for if no $userid
+	* @param {String} [opts.companyname] The company of the client the quote is for if no $userid
+	* @param {String} [opts.email] The email address of the client the quote is for if no $userid
+	* @param {String} [opts.address1] The address1 of the client the quote is for if no $userid
+	* @param {String} [opts.address2] The address2 of the client the quote is for if no $userid
+	* @param {String} [opts.city] The city of the client the quote is for if no $userid
+	* @param {String} [opts.state] The state of the client the quote is for if no $userid
+	* @param {String} [opts.country] The country of the client the quote is for if no $userid
+	* @param {String} [opts.phonenumber] The phone number of the client (no country code) the quote is for if no $userid. Local format eg 4035551234
+	* @param {String} [opts.tax_id] The tax id of the client
+	* @param {Number} [opts.currency] The id of the currency for the quote is for if no $userid
+	* @param {String} [opts.proposal] The proposal text displayed to the end user
+	* @param {String} [opts.customernotes] The notes on the quote displayed to the end user
+	* @param {String} [opts.adminnotes] The notes on the quote displayed to the staff only
+	*/
+	createQuote (opts) {
+		const options = {
+			action: 'CreateQuote',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Obtain transactions matching the passed criteria - https://developers.whmcs.com/api-reference/gettransactions/
+	* @param {Object} opts
+	* @param {Number} [opts.invoiceid] Obtain transactions for a specific invoice id
+	* @param {Number} [opts.clientid] Find transactions for a specific client id
+	* @param {String} [opts.transid] Find transactions for a specific transaction id
+	*/
+	getTransactions (opts) {
+		const options = {
+			action: 'GetTransactions',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Obtain the Credit Log for a Client Account - https://developers.whmcs.com/api-reference/getcredits/
+	* @param {Object} opts
+	* @param {Number} opts.clientid The Client to obtain the log for
+	*/
+	getCredits (opts) {
+		const options = {
+			action: 'GetCredits',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Updates an existing quote - https://developers.whmcs.com/api-reference/updatequote/
+	* @param {Object} opts
+	* @param {Number} opts.quoteid The ID of the quote to update
+	* @param {String} [opts.subject] The subject of the quote
+	* @param {String} [opts.stage] The current stage of the quote (‘Draft’,‘Delivered’,‘On Hold’,‘Accepted’,‘Lost’,‘Dead’)
+	* @param {String} [opts.validuntil] The date the quote is valid until in localised format (eg DD/MM/YYYY)
+	* @param {String} [opts.datecreated] The date the quote was created in localised format (eg DD/MM/YYYY)
+	* @param {Array} [opts.lineitems] A base64 encoded serialized array containing the following keys:
+	* @param {Number} [opts.lineitems[x][id]] For $lineitems. The id of an existing line item. Omit for new lines
+	* @param {String} [opts.lineitems[x][desc]] For $lineitems. The description of the line item
+	* @param {Number} [opts.lineitems[x][qty]] For $lineitems. The quantity of the line item being quoted for
+	* @param {Number} [opts.lineitems[x][up]] For $lineitems. The Unit Price of the line item
+	* @param {Number} [opts.lineitems[x][discount]] For $lineitems. The amount of discount to provide on the line items
+	* @param {Boolean} [opts.lineitems[x][taxable]] For $lineitems. Is the line item taxable
+	* @param {Number} [opts.userid] If the quote is for an exising client, the client ID the quote is for
+	* @param {String} [opts.firstname] The first name of the client the quote is for if no $userid
+	* @param {String} [opts.lastname] The last name of the client the quote is for if no $userid
+	* @param {String} [opts.companyname] The company of the client the quote is for if no $userid
+	* @param {String} [opts.email] The email address of the client the quote is for if no $userid
+	* @param {String} [opts.address1] The address1 of the client the quote is for if no $userid
+	* @param {String} [opts.address2] The address2 of the client the quote is for if no $userid
+	* @param {String} [opts.city] The city of the client the quote is for if no $userid
+	* @param {String} [opts.state] The state of the client the quote is for if no $userid
+	* @param {String} [opts.country] The country of the client the quote is for if no $userid
+	* @param {String} [opts.phonenumber] The phone number of the client (no country code) the quote is for if no $userid. Local format eg 4035551234
+	* @param {String} [opts.tax_id] The tax id of the client
+	* @param {Number} [opts.currency] The id of the currency for the quote is for if no $userid
+	* @param {String} [opts.proposal] The proposal text displayed to the end user
+	* @param {String} [opts.customernotes] The notes on the quote displayed to the end user
+	* @param {String} [opts.adminnotes] The notes on the quote displayed to the staff only
+	*/
+	updateQuote (opts) {
+		const options = {
+			action: 'UpdateQuote',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Send a quote to the associated client - https://developers.whmcs.com/api-reference/sendquote/
+	* @param {Object} opts
+	* @param {Number} opts.quoteid The id of the quote to send
+	*/
+	sendQuote (opts) {
+		const options = {
+			action: 'SendQuote',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Obtain quotes matching the passed criteria - https://developers.whmcs.com/api-reference/getquotes/
+	* @param {Object} opts
+	* @param {Number} [opts.limitstart] The offset for the returned quote data (default: 0)
+	* @param {Number} [opts.limitnum] The number of records to return (default: 25)
+	* @param {Number} [opts.quoteid] Obtain a specific quote id
+	* @param {Number} [opts.userid] Find quotes for a specific client id
+	* @param {String} [opts.subject] Find quotes for a specific subject
+	* @param {String} [opts.stage] Find quotes for a specific stage (‘Draft’,‘Delivered’,‘On Hold’,‘Accepted’,‘Lost’,‘Dead’)
+	* @param {String} [opts.datecreated] Find quotes for a specific created date. Format: Y-m-d
+	* @param {String} [opts.lastmodified] Find quotes for a specific last modified date. Format: Y-m-d
+	* @param {String} [opts.validuntil] Find quotes for a specific valid until date. Format: Y-m-d
+	*/
+	getQuotes (opts) {
+		const options = {
+			action: 'GetQuotes',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Updates a transaction in the system - https://developers.whmcs.com/api-reference/updatetransaction/
+	* @param {Object} opts
+	* @param {Number} opts.transactionid The unique id of the transaction to update
+	* @param {Number} [opts.refundid] The unique id of the transaction that this transaction refunds
+	* @param {Number} [opts.userid] The ID of the user to apply the transaction to
+	* @param {Number} [opts.invoiceid] The ID of the invoice the transaction is for
+	* @param {String} [opts.transid] The unique transaction id for this payment
+	* @param {String} [opts.date] The date of the transaction Y-m-d
+	* @param {String} [opts.gateway] The gateway of the transaction in system format
+	* @param {Number} [opts.currency] The currency id for the transaction if not associated with a user
+	* @param {String} [opts.description] The description of the transaction
+	* @param {Number} [opts.amountin] The amount received by the payment
+	* @param {Number} [opts.fees] The amount of fee charged on the transaction by the merchant - This can be negative
+	* @param {Number} [opts.amountout] The amount paid out by the payment
+	* @param {Number} [opts.rate] The exchange rate for the payment based on the default currency
+	* @param {Boolean} [opts.credit] Should the payment be applied to credit on the client account. Invoice ID must not be provided.
+	*/
+	updateTransaction (opts) {
+		const options = {
+			action: 'UpdateTransaction',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Retrieve a specific invoice - https://developers.whmcs.com/api-reference/getinvoice/
+	* @param {Object} opts
+	* @param {Number} opts.invoiceid The ID of the invoice to retrieve
+	*/
+	getInvoice (opts) {
+		const options = {
+			action: 'GetInvoice',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Update an invoice using the provided parameters. - https://developers.whmcs.com/api-reference/updateinvoice/
+	* @param {Object} opts
+	* @param {Number} opts.invoiceid The ID of the invoice to update
+	* @param {String} [opts.status] The status of the invoice being
+	* @param {String} [opts.paymentmethod] The payment method of the invoice in system format
+	* @param {Number} [opts.taxrate] The first level tax rate to apply to the invoice to override the system default
+	* @param {Number} [opts.taxrate2] The second level tax rate to apply to the invoice to override the system default
+	* @param {Number} [opts.subtotal] Update the subtotal of the invoice
+	* @param {Number} [opts.total] Update the total of the invoice
+	* @param {Number} [opts.credit] Update the credit applied to the invoice
+	* @param {String} [opts.date] The date that the invoice should show as created YYYY-mm-dd
+	* @param {String} [opts.duedate] The due date of the invoice YYYY-mm-dd
+	* @param {String} [opts.datepaid] The date paid of the invoice YYYY-mm-dd
+	* @param {String} [opts.notes] The notes to appear on the invoice
+	* @param {Array.<String>} [opts.itemdescription] An array of lineItemId => Description of items to change
+	* @param {Array.<Number>} [opts.itemamount] An array of lineItemId => amount of items to change
+	* @param {Array.<Boolean>} [opts.itemtaxed] An array of lineItemId => taxed of items to change
+	* @param {Array.<String>} [opts.newitemdescription] The line items description
+	* @param {Array.<Number>} [opts.newitemamount] The line items amount
+	* @param {Array.<Boolean>} [opts.newitemtaxed] The line items is taxed value
+	* @param {Array.<Number>} [opts.deletelineids] An array of line item ids to remove from the invoice
+	* @param {Boolean} [opts.publish] Publish the invoice
+	* @param {Boolean} [opts.publishandsendemail] Publish and email the invoice
+	*/
+	updateInvoice (opts) {
+		const options = {
+			action: 'UpdateInvoice',
+			...opts
+		}
+		return this.callApi(options)
+	}
 }
 
 module.exports = Billing
