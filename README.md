@@ -54,78 +54,7 @@ const invoices = await myBilling.getInvoices()
 
 ## Available Modules
 
-### Billing
-
-- updateInvoice(invoiceid, options)
-- acceptOrder(orderid, options)
-- addOrder(clientid, order)
-- addCredit(clientid, amount, description)
-- payInvoice(invoiceid, amount)
-- getInvoice(invoiceid)
-- getInvoices([options])
-- cancelOrder(orderid)
-- deleteOrder(orderid)
-- createInvoice(clientid, invoice)
-- capturePayment(invoiceid, options)
-
-### Customers
-
-- getContacts(clientid, [options])
-- createContact(options)
-- deleteContact(contactid)
-- updateContact(contactid, options)
-- createCustomer(options)
-- deleteCustomer(clientid)
-- updateCustomer(clientid, options)
-- updateCustomerDomain(domainid, options)
-- updateCustomerProduct(serviceid, options)
-- getCustomer(clientid, [options])
-- getCustomerProducts(clientid, [options])
-- getCustomerDomains(clientid, [options])
-- getCustomerEmails(clientid, [options])
-- getCustomerInvoices(clientid, [options])
-- validateLogin(email, password)
-- sendEmail(id, options)
-- getCredits(userid)
-
-### Products
-
-- getProduct(id)
-- getProducts(gid)
-- getProductsByType(type, id)
-- getOrders(method, id, offset, limit)
-- upgradeProduct(product)
-
-### Support
-
-- openTicket(clientid, department, subject, message, [options])
-- getTicket(ticketid)
-- deleteTicket(ticketid)
-- replyTicket(ticketid, message, [options])
-- getTickets([options])
-- updateTicket(options)
-
-### Domains
-
-- getDomainLockStatus(domainid)
-- setDomainLockStatus(domainid, status)
-- getDomainNameservers(domainid)
-- setDomainNameservers(domainid, nameservers)
-
-### Utilities
-
-- getToDoItems(status, offset, limit)
-
-### Licenses
-
-- addLicense(type)
-- cancelLicense(key)
-- listLicenses(callback)
-- reissueLicense(key)
-- modifyLicense(key, opts)
-- getPricingLicense(callback)
-- searchLicense(opts)
-- brandingLicense(action, key)
+See a list of available Modules and their methods here: [https://damageesp.github.io/whmcs-js/](https://damageesp.github.io/whmcs-js/)
 
 ## [Documentation](https://damageesp.github.io/whmcs-js/)
 
