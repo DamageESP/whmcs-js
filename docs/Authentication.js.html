@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Authentication.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Authentication.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const WHMCS = require('../whmcs')
+
+/**
+ * Allows you to manage your Authentication module in WHMCS.
+ * @extends WHMCS
+ */
+class Authentication extends WHMCS {
+  /**
+   * @param {Object} config Object containing your API credentials.
+   * @param {string} config.serverUrl URL to your installation. Remember to point to /includes/api.php
+   * @param {string} [config.username]
+   * @param {string} [config.password]
+   * @param {string} [config.identifier]
+   * @param {string} [config.secret]
+   */
+  constructor (config) {
+    super(config)
+  }
+  /**
+	* Create an OAuth Credential - https://developers.whmcs.com/api-reference/createoauthcredential/
+	* @param {Object} opts
+	* @param {String} opts.grantType One of ‘authorization_code’ or ‘single_sign_on’
+	* @param {String} opts.scope A space separated list of valid scopes from tbloauthserver_scopes
+	* @param {String} [opts.name] The name to give the oAuth Credential for the authorization_code $grantType
+	* @param {Number} [opts.serviceId] The id of the service for the single_sign_on $grantType
+	* @param {String} [opts.description] The description of the OAuth Credential
+	* @param {String} [opts.logoUri] URL or Path Relative to the Base WHMCS Client Area Directory to a logo image file for this application.
+	* @param {String} [opts.redirectUri] Authorised Redirect URIs
+	*/
+	createOAuthCredential (opts) {
+		const options = {
+			action: 'CreateOAuthCredential',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Removes OAuth Credential record. This action cannot be undone. - https://developers.whmcs.com/api-reference/deleteoauthcredential/
+	* @param {Object} opts
+	* @param {Number} opts.credentialId The credential id to be deleted
+	*/
+	deleteOAuthCredential (opts) {
+		const options = {
+			action: 'DeleteOAuthCredential',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* This command can be used to validate an email address and password against
+a registered user in WHMCS. On success, the userid and password hash will
+be returned which can be used to create an authenticated session by setting
+the session key ‘uid’ to the userid and the session key ‘upw’ to the
+passwordhash. Note: if session IP validation is enabled, this API call
+must be executed via the local API to receive a valid hash. - https://developers.whmcs.com/api-reference/validatelogin/
+	* @param {Object} opts
+	* @param {String} opts.email Client or Sub-Account Email Address
+	* @param {String} opts.password2 Password to validate
+	*/
+	validateLogin (opts) {
+		const options = {
+			action: 'ValidateLogin',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Updates a given OAuth API Client Credential. - https://developers.whmcs.com/api-reference/updateoauthcredential/
+	* @param {Object} opts
+	* @param {Number} opts.credentialId The auto increment ID of the credential set to be updated
+	* @param {String} [opts.clientApiIdentifier] The OAuth API Client Credential Unique Identifier (Client ID) to be updated. Only required if credentialId is not known/passed.
+	* @param {String} [opts.name] The name to assign
+	* @param {String} [opts.description] The description to assign
+	* @param {String} [opts.grantType] The grant type for which the credential set is valid for. Possible values include: authorization_code or single_sign_on
+	* @param {String} [opts.scope] A space delimited list of the scopes for which the credential set is valid. See CreateOAuthCredential for permitted values
+	* @param {Number} [opts.serviceId] The service ID for which the credential relates to
+	* @param {Array.&lt;String>} [opts.logoUri] he logoUri to assign
+	* @param {String} [opts.redirectUri] An array of Authorized Redirect URIs
+	* @param {Boolean} [opts.resetSecret] Set to true to reset the OAuth API Client Credential Secret
+	*/
+	updateOAuthCredential (opts) {
+		const options = {
+			action: 'UpdateOAuthCredential',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* List OAuth Credentials matching passed criteria - https://developers.whmcs.com/api-reference/listoauthcredentials/
+	* @param {Object} opts
+	* @param {String} [opts.grantType] Find credentials for a specific grant type
+	* @param {String} [opts.sortField] Sort the response using the passed field
+	* @param {String} [opts.sortOrder] The direction of the sort order (‘ASC’, ‘DESC’)
+	* @param {Number} [opts.limit] To limit the number of returned credentials
+	*/
+	listOAuthCredentials (opts) {
+		const options = {
+			action: 'ListOAuthCredentials',
+			...opts
+		}
+		return this.callApi(options)
+	}
+}
+
+module.exports = Authentication
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Addons.html">Addons</a></li><li><a href="Affiliates.html">Affiliates</a></li><li><a href="Authentication.html">Authentication</a></li><li><a href="Billing.html">Billing</a></li><li><a href="Clients.html">Clients</a></li><li><a href="Domains.html">Domains</a></li><li><a href="Modules.html">Modules</a></li><li><a href="Orders.html">Orders</a></li><li><a href="Products.html">Products</a></li><li><a href="ProjectManagement.html">ProjectManagement</a></li><li><a href="Servers.html">Servers</a></li><li><a href="Services.html">Services</a></li><li><a href="Support.html">Support</a></li><li><a href="System.html">System</a></li><li><a href="Tickets.html">Tickets</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Feb 04 2019 10:15:53 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

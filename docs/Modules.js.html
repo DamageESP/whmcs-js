@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Modules.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Modules.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const WHMCS = require('../whmcs')
+
+/**
+ * Allows you to manage your Modules in WHMCS.
+ * @extends WHMCS
+ */
+class Modules extends WHMCS {
+  /**
+   * @param {Object} config Object containing your API credentials.
+   * @param {string} config.serverUrl URL to your installation. Remember to point to /includes/api.php
+   * @param {string} [config.username]
+   * @param {string} [config.password]
+   * @param {string} [config.identifier]
+   * @param {string} [config.secret]
+   */
+  constructor (config) {
+    super(config)
+  }
+  /**
+   * Activates a given module. - https://developers.whmcs.com/api-reference/activatemodule/
+   * @param {Object} opts
+   * @param {String} opts.moduleType The module type to be activated
+   * @param {String} opts.moduleName The module name to be activated
+   * @param {Array} [opts.parameters] An array of configuration parameters to set for the given module. Use GetModuleConfigurationParameters to obtain a list of fields for a given module.
+   */
+  activateModule (opts) {
+    const options = {
+      action: 'ActivateModule',
+      ...opts
+    }
+    return this.callApi(options)
+  }
+  /**
+   * Deactivates a given module. - https://developers.whmcs.com/api-reference/deactivatemodule/
+   * @param {Object} opts
+   * @param {String} opts.moduleType The module type to be deactivated
+   * @param {String} opts.moduleName The module name to be deactivated
+   */
+  deactivateModule (opts) {
+    const options = {
+      action: 'DeactivateModule',
+      ...opts
+    }
+    return this.callApi(options)
+  }
+  /**
+   * Obtains the Module Configuration Parameters - https://developers.whmcs.com/api-reference/getmoduleconfigurationparameters/
+   * @param {Object} opts
+   * @param {String} opts.moduleType The module type to be activated
+   * @param {String} opts.moduleName The module name to be activated
+   */
+  getModuleConfigurationParameters (opts) {
+    const options = {
+      action: 'GetModuleConfigurationParameters',
+      ...opts
+    }
+    return this.callApi(options)
+  }
+  /**
+   * Obtains the Module Queue for Incomplete Failed Actions - https://developers.whmcs.com/api-reference/getmodulequeue/
+   * @param {Object} opts
+   * @param {String} [opts.serviceType] The type of service to load (‘domain’, ‘service’ or “))
+   * @param {String} [opts.moduleName] The module name to obtain the queue for in system format. eg cpanel
+   * @param {String} [opts.moduleAction] The module action to obtain the queue for. eg CreateAccount, SuspendAccount
+   * @param {String} [opts.since] The date/time since to obtain the items. Format Y-m-d Can include H:i:s
+   */
+  getModuleQueue (opts) {
+    const options = {
+      action: 'GetModuleQueue',
+      ...opts
+    }
+    return this.callApi(options)
+  }
+  /**
+   * Activates a given module. - https://developers.whmcs.com/api-reference/updatemoduleconfiguration/
+   * @param {Object} opts
+   * @param {String} opts.moduleType The module type to be activated
+   * @param {String} opts.moduleName The module name to be activated
+   * @param {Array} [opts.parameters] An array of configuration parameters to set for the given module. Use GetModuleConfigurationParameters to obtain a list of fields for a given module.
+   */
+  updateModuleConfiguration (opts) {
+    const options = {
+      action: 'UpdateModuleConfiguration',
+      ...opts
+    }
+    return this.callApi(options)
+  }
+}
+
+module.exports = Modules
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Addons.html">Addons</a></li><li><a href="Affiliates.html">Affiliates</a></li><li><a href="Authentication.html">Authentication</a></li><li><a href="Billing.html">Billing</a></li><li><a href="Clients.html">Clients</a></li><li><a href="Domains.html">Domains</a></li><li><a href="Modules.html">Modules</a></li><li><a href="Orders.html">Orders</a></li><li><a href="Products.html">Products</a></li><li><a href="ProjectManagement.html">ProjectManagement</a></li><li><a href="Servers.html">Servers</a></li><li><a href="Services.html">Services</a></li><li><a href="Support.html">Support</a></li><li><a href="System.html">System</a></li><li><a href="Tickets.html">Tickets</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Feb 04 2019 10:15:53 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

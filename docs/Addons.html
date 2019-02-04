@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Products</title>
+    <title>JSDoc: Class: Addons</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Products</h1>
+    <h1 class="page-title">Class: Addons</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Products<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Addons<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Allows you to manage your products module in WHMCS.</div>
+            <div class="class-description">Allows you to manage your Addons module in WHMCS.</div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="Products"><span class="type-signature"></span>new Products<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Addons"><span class="type-signature"></span>new Addons<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -333,7 +333,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Products.js.html">Products.js</a>, <a href="Products.js.html#line7">line 7</a>
+        <a href="Addons.js.html">Addons.js</a>, <a href="Addons.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -398,7 +398,7 @@
     
 
     
-    <h4 class="name" id="addProduct"><span class="type-signature"></span>addProduct<span class="signature">(opts)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="updateClientAddon"><span class="type-signature"></span>updateClientAddon<span class="signature">(opts)</span><span class="type-signature"></span></h4>
     
 
     
@@ -406,7 +406,7 @@
 
 
 <div class="description">
-    Adds a product to the system to be available for purchase - https://developers.whmcs.com/api-reference/addproduct/
+    Updates a Client Addon - https://developers.whmcs.com/api-reference/updateclientaddon/
 </div>
 
 
@@ -486,6 +486,136 @@
 
         <tr>
             
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The id of the client addon to update</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The status to change the addon to</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>terminationDate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The termination date of the addon Y-m-d</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>addonid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The configured addon id to update the client addon to</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>name</code></td>
             
 
@@ -501,6 +631,8 @@
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -510,14 +642,14 @@
 
             
 
-            <td class="description last">The name of the product to be added</td>
+            <td class="description last">The custom name to apply to the addon</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>gid</code></td>
+                <td class="name"><code>setupfee</code></td>
             
 
             <td class="type">
@@ -532,6 +664,8 @@
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -541,14 +675,47 @@
 
             
 
-            <td class="description last">The id of the product group to add the product</td>
+            <td class="description last">The setup fee for the client addon</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>recurring</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The recurring amount for the client addon</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>billingcycle</code></td>
             
 
             <td class="type">
@@ -574,80 +741,14 @@
 
             
 
-            <td class="description last">One of ‘hostingaccount’, ‘reselleraccount’, ‘server’ or ‘other’</td>
+            <td class="description last">The billing cycle for the addon</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>stockcontrol</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Set to true to enable stock control on the product</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>qty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">How much of this product is in stock</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>paytype</code></td>
+                <td class="name"><code>nextduedate</code></td>
             
 
             <td class="type">
@@ -673,179 +774,14 @@
 
             
 
-            <td class="description last">The payment type of the product. One of ‘free’, ‘onetime’, ‘recurring’</td>
+            <td class="description last">The next due date for the addon Y-m-d</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>hidden</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Should the product be hidden from the client order form</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>showdomainoptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Should the product show the domain registration options.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tax</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Does tax apply to the product.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>isFeatured</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Should the product be featured in the Product Group.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>proratabilling</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Is pro-rata billing enabled for this product.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>description</code></td>
+                <td class="name"><code>nextinvoicedate</code></td>
             
 
             <td class="type">
@@ -871,113 +807,14 @@
 
             
 
-            <td class="description last">The description of the product to show on the product listing in the cart</td>
+            <td class="description last">The next invoice date for the addon Y-m-d</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>welcomeemail</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The id of the Email Template to use as the welcome email. Product/Service Messages only</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>proratadate</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">See https://docs.whmcs.com/Products_and_Services#Pricing_Tab</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>proratachargenextmonth</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">See https://docs.whmcs.com/Products_and_Services#Pricing_Tab</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>subdomain</code></td>
+                <td class="name"><code>terminationDate</code></td>
             
 
             <td class="type">
@@ -1003,14 +840,14 @@
 
             
 
-            <td class="description last">A comma separated list of subdomains to offer on the domain register page. eg: .domain1.com,.domain2.com</td>
+            <td class="description last">The termination date of the addon Y-m-d</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>autosetup</code></td>
+                <td class="name"><code>notes</code></td>
             
 
             <td class="type">
@@ -1036,337 +873,7 @@
 
             
 
-            <td class="description last">When should the product be automatically setup. One of “ (never), ‘on’ (pending order), ‘payment’ (on payment), ‘order’ (on order)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>module</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The server module system name to associate with the product. eg: cpanel, autorelease, plesk</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>servergroupid</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The server group id used on product creation to associate an appropriate server</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configoption1</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Mixed</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The first module configuration value</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configoption2</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Mixed</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The second module configuration value</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configoption3</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Mixed</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The third module configuration value</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configoption4</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Mixed</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The fourth module configuration value</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configoption5</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Mixed</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The fifth module configuration value</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configoption6</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Mixed</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The sixth module configuration value</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>order</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The order to in which to display on the order form</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>pricing</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The pricing array to associate with the product. format $pricing[currencyid]cycle</td>
+            <td class="description last">The admin notes to associate with the addon</td>
         </tr>
 
     
@@ -1414,7 +921,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Products.js.html">Products.js</a>, <a href="Products.js.html#line50">line 50</a>
+        <a href="Addons.js.html">Addons.js</a>, <a href="Addons.js.html#line35">line 35</a>
     </li></ul></dd>
     
 

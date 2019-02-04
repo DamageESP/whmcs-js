@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: Servers.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,63 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: Servers.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const WHMCS = require('../whmcs')
 
+/**
+ * Allows you to manage your Servers module in WHMCS.
+ * @extends WHMCS
+ */
+class Servers extends WHMCS {
+  /**
+   * @param {Object} config Object containing your API credentials.
+   * @param {string} config.serverUrl URL to your installation. Remember to point to /includes/api.php
+   * @param {string} [config.username]
+   * @param {string} [config.password]
+   * @param {string} [config.identifier]
+   * @param {string} [config.secret]
+   */
+  constructor (config) {
+    super(config)
+  }
+  /**
+	* Get health status. - https://developers.whmcs.com/api-reference/gethealthstatus/
+	* @param {Object} opts
+	* @param {Boolean} [opts.fetchStatus] Pass as true to attempt to fetch server status values.
+	*/
+	getHealthStatus (opts) {
+		const options = {
+			action: 'GetHealthStatus',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Get servers. - https://developers.whmcs.com/api-reference/getservers/
+	* @param {Object} opts
+	* @param {Boolean} [opts.fetchStatus] Pass as true to attempt to fetch server status values.
+	*/
+	getServers (opts) {
+		const options = {
+			action: 'GetServers',
+			...opts
+		}
+		return this.callApi(options)
+	}
+}
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = Servers
+</code></pre>
+        </article>
+    </section>
 
 
 
