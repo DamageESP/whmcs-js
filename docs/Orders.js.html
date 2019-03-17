@@ -46,177 +46,194 @@ class Orders extends WHMCS {
     super(config)
   }
   /**
-   * Accept order - https://developers.whmcs.com/api-reference/acceptorder/
-   * @param {Object} order
-   * @param {Number} order.orderid
-   * @param {Number} [order.serverid]
-   * @param {String} [order.serviceusername]
-   * @param {String} [order.servicepassword]
-   * @param {String} [order.registrar]
-   * @param {Boolean} [order.sendregistrar]
-   * @param {Boolean} [order.autosetup]
-   * @param {Boolean} [order.sendemail]
-   */
-  acceptOrder (order) {
-    const options = {
-      action: 'AcceptOrder',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Add order - https://developers.whmcs.com/api-reference/addorder/
-   * @param {Object} order
-   * @param {Number} order.clientid
-   * @param {string} order.paymentmethod
-   * @param {Number|Array.&lt;Number>} [order.pid] Product id
-   * @param {String|Array.&lt;String>} [order.domain] Domain name
-   * @param {String|Array.&lt;String>} [order.billingcycle]
-   * @param {String|Array.&lt;String>} [order.domaintype] Set for domain registration, register or transfer
-   * @param {Number|Array.&lt;Number>} [order.regperiod]
-   * @param {String|Array.&lt;String>} [order.eppcode]
-   * @param {string} [order.nameserver1] The first nameserver to apply to all domains in the order
-   * @param {string} [order.nameserver2] The second nameserver to apply to all domains in the order
-   * @param {string} [order.nameserver3] The third nameserver to apply to all domains in the order
-   * @param {string} [order.nameserver4] The fourth nameserver to apply to all domains in the order
-   * @param {string} [order.nameserver5] The fifth nameserver to apply to all domains in the order
-   * @param {String|Array.&lt;String>} [order.customfields] Base64 encoded serialized array of custom field values
-   * @param {String|Array.&lt;String>} [order.configoptions] Base64 encoded serialized array of configurable product options
-   * @param {Number|Array.&lt;Number>} [order.priceoverride] Override the price of the product being ordered
-   * @param {string} [order.promocode] The promotion code to apply to the order
-   * @param {string} [order.promooverride] 	Should the promotion apply to the order even without matching promotional products
-   * @param {string} [order.affid] The affiliate id to associate with the order
-   * @param {boolean} [order.noinvoice] Set to true to suppress the invoice generating for the whole order
-   * @param {boolean} [order.noinvoiceemail] Set to true to suppress the Invoice Created email being sent for the order
-   * @param {boolean} [order.noemail] Set to true to suppress the Invoice Created email being sent for the order
-   * @param {String|Array.&lt;String>} [order.addons] A comma separated list of addons to create on order with the products
-   * @param {String|Array.&lt;String>} [order.hostname] Hostname of the server
-   * @param {String|Array.&lt;String>} [order.ns1prefix] Prefix to be used for the NS1 nameserver
-   * @param {String|Array.&lt;String>} [order.ns2prefix] Prefix to be used for the NS2 nameserver
-   * @param {String|Array.&lt;String>} [order.rootpw] Root password for the server
-   * @param {string} [order.contactid] the ID of a contact to use for the domain registrant details
-   * @param {boolean} [order.dnsmanagement]  True to enable
-   * @param {String|Array.&lt;String>} [order.domainfields] Base64 encoded serialized array of the TLD specific field values
-   * @param {boolean} [order.emailforwarding] True to enable
-   * @param {boolean} [order.idprotection]  True to enable
-   * @param {Number|Array.&lt;Number>} [order.domainpriceoverride] Override the price of the registration price on the domain being ordered
-   * @param {Number|Array.&lt;Number>} [order.domainrenewoverride] Override the price of the renewal price on the domain being ordered
-   * @param {Object} [order.domainrenewals] Object Name:value of domain to regperiod
-   * @param {string} [order.clientip] The ip address to associate with the order
-   * @param {Number} [order.addonid] The Addon ID for an Addon Only Order
-   * @param {Number} [order.serviceid] The Service ID for an Addon Only Order
-   * @param {Number|Array.&lt;Number>} [order.addonids] An Array of addon ids for an Addon Only Order
-   * @param {Number|Array.&lt;Number>} [order.serviceids] An array of service ids to associate the addons for an Addon Only order
-   */
-  addOrder (order) {
-    const options = {
-      action: 'AddOrder',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Cancel a Pending Order - https://developers.whmcs.com/api-reference/cancelorder/
-   * @param {Object} order
-   * @param {Number} order.orderid The ID of the pending order
-   * @param {Boolean} [order.cancelsub] Attempt to cancel the subscription associated with the products
-   * @param {Boolean} [order.noemail] Set to true to stop the invoice payment email being sent if the invoice becomes paid
-   */
-  cancelOrder (order) {
-    const options = {
-      action: 'CancelOrder',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Deletes a cancelled or fraud order. - https://developers.whmcs.com/api-reference/deleteorder/
-   * Removes an order from the system. This cannot be undone. This will remove all items associated with the order (services, addons, domains, invoices etc)
-   * @param {Object} order
-   * @param {Number} order.orderid The order to be deleted
-   */
-  deleteOrder (order) {
-    const options = {
-      action: 'DeleteOrder',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Marks an order as fraudulent. - https://developers.whmcs.com/api-reference/fraudorder/
-   * @param {Object} order
-   * @param {Number} order.orderid The Order ID to set as fraud
-   * @param {Boolean} [order.cancelsub] Pass as true to cancel any PayPal Subscription(s) associated with the products &amp; services that belong to the given order.
-   */
-  fraudOrder (order) {
-    const options = {
-      action: 'FraudOrder',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Obtain orders matching the passed criteria - https://developers.whmcs.com/api-reference/getorders/
-   * @param {Object} [order]
-   * @param {Number} [order.limitstart] The offset for the returned order data (default: 0)
-   * @param {Number} [order.limitnum] The number of records to return (default: 25)
-   * @param {Number} [order.id] Find orders for a specific id
-   * @param {Number} [order.userid] Find orders for a specific client id
-   * @param {String} [order.status] Find orders for a specific status
-   */
-  getOrders (order) {
-    const options = {
-      action: 'GetOrders',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Retrieve Order Status and number in those statuses - https://developers.whmcs.com/api-reference/getorderstatuses/
-   */
-  getOrderStatuses () {
-    const options = {
-      action: 'GetOrderStatuses'
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Obtain promotions matching the passed criteria - https://developers.whmcs.com/api-reference/getpromotions/
-   * @param {Object} [order]
-   * @param {String} [order.code] Retrieve a specific promotion code. Do not pass to retrieve all
-   */
-  getPromotions (order) {
-    const options = {
-      action: 'GetPromotions',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-   * Run a fraud check on a passed Order ID - https://developers.whmcs.com/api-reference/orderfraudcheck/
-   * @param {Object} order
-   * @param {Number} order.orderid The order id to complete the fraud check on
-   * @param {String} [order.ipaddress] To override the IP address on the fraud check
-   */
-  orderFraudCheck (order) {
-    const options = {
-      action: 'OrderFraudCheck',
-      ...order
-    }
-    return this.callApi(options)
-  }
-  /**
-  * Sets an order, and all associated order items to Pending Status - https://developers.whmcs.com/api-reference/pendingorder/
-  * @param {Object} order
-  * @param {Number} order.orderid The order id to be accepted
-  */
-  pendingOrder (order) {
-    const options = {
-      action: 'PendingOrder',
-      ...order
-    }
-    return this.callApi(options)
-  }
+	* Retrieve Order Status and number in those statuses - https://developers.whmcs.com/api-reference/getorderstatuses/
+	* @param {Object} opts
+	*/
+	getOrderStatuses (opts) {
+		const options = {
+			action: 'GetOrderStatuses',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* NOTE: This API method is designed to be used in the building of custom order
+forms. As a result, only custom fields that have the ‘Show on Order Form’
+setting enabled will be returned for a given product. - https://developers.whmcs.com/api-reference/getproducts/
+	* @param {Object} opts
+	* @param {Number} [opts.pid] string
+	* @param {Number} [opts.gid] Retrieve products in a specific group id
+	* @param {String} [opts.module] Retrieve products utilising a specific module
+	*/
+	getProducts (opts) {
+		const options = {
+			action: 'GetProducts',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Accepts a pending order - https://developers.whmcs.com/api-reference/acceptorder/
+	* @param {Object} opts
+	* @param {Number} opts.orderid The order id to be accepted
+	* @param {Number} [opts.serverid] The specific server to assign to products within the order
+	* @param {String} [opts.serviceusername] The specific username to assign to products within the order
+	* @param {String} [opts.servicepassword] The specific password to assign to products within the order
+	* @param {String} [opts.registrar] The specific registrar to assign to domains within the order
+	* @param {Boolean} [opts.sendregistrar] Send the request to the registrar to register the domain.
+	* @param {Boolean} [opts.autosetup] Send the request to the product module to activate the service. This can override the product configuration.
+	* @param {Boolean} [opts.sendemail] Send any automatic emails. This can be Product Welcome, Domain Renewal, Domain Transfer etc.
+	*/
+	acceptOrder (opts) {
+		const options = {
+			action: 'AcceptOrder',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Sets an order, and all associated order items to Pending status - https://developers.whmcs.com/api-reference/pendingorder/
+	* @param {Object} opts
+	* @param {Number} opts.orderid The order id to be accepted
+	*/
+	pendingOrder (opts) {
+		const options = {
+			action: 'PendingOrder',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Marks an order as fraudulent. - https://developers.whmcs.com/api-reference/fraudorder/
+	* @param {Object} opts
+	* @param {Number} opts.orderid The Order ID to set as fraud
+	* @param {Boolean} [opts.cancelsub] Pass as true to cancel any PayPal Subscription(s) associated with the products &amp; services that belong to the given order.
+	*/
+	fraudOrder (opts) {
+		const options = {
+			action: 'FraudOrder',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Cancel a Pending Order - https://developers.whmcs.com/api-reference/cancelorder/
+	* @param {Object} opts
+	* @param {Number} opts.orderid The ID of the pending order
+	* @param {Boolean} [opts.cancelsub] Attempt to cancel the subscription associated with the products
+	* @param {Boolean} [opts.noemail] Set to true to stop the invoice payment email being sent if the invoice becomes paid
+	*/
+	cancelOrder (opts) {
+		const options = {
+			action: 'CancelOrder',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Adds an order to a client. - https://developers.whmcs.com/api-reference/addorder/
+	* @param {Object} opts
+	* @param {Number} opts.clientid 
+	* @param {String} opts.paymentmethod The payment method for the order in the system format. eg. paypal, mailin
+	* @param {Array.&lt;Number>} [opts.pid] The array of product ids to add the order for
+	* @param {Array.&lt;String>} [opts.domain] The array of domain names associated with the products/domains
+	* @param {Array.&lt;String>} [opts.billingcycle] The array of billing cycles for the products
+	* @param {Array.&lt;String>} [opts.domaintype] For domain registrations, an array of register or transfer values
+	* @param {Array.&lt;Number>} [opts.regperiod] For domain registrations, the registration periods for the domains in the order
+	* @param {Array.&lt;String>} [opts.eppcode] For domain transfers. The epp codes for the domains being transferred in the order
+	* @param {String} [opts.nameserver1] The first nameserver to apply to all domains in the order
+	* @param {String} [opts.nameserver2] The second nameserver to apply to all domains in the order
+	* @param {String} [opts.nameserver3] The third nameserver to apply to all domains in the order
+	* @param {String} [opts.nameserver4] The fourth nameserver to apply to all domains in the order
+	* @param {String} [opts.nameserver5] The fifth nameserver to apply to all domains in the order
+	* @param {Array.&lt;String>} [opts.customfields] an array of base64 encoded serialized array of product custom field values
+	* @param {Array.&lt;String>} [opts.configoptions] an array of base64 encoded serialized array of product configurable options values
+	* @param {Array.&lt;Number>} [opts.priceoverride] Override the price of the product being ordered
+	* @param {String} [opts.promocode] The promotion code to apply to the order
+	* @param {Boolean} [opts.promooverride] Should the promotion apply to the order even without matching promotional products
+	* @param {Number} [opts.affid] The affiliate id to associate with the order
+	* @param {Boolean} [opts.noinvoice] Set to true to suppress the invoice generating for the whole order
+	* @param {Boolean} [opts.noinvoiceemail] Set to true to suppress the Invoice Created email being sent for the order
+	* @param {Boolean} [opts.noemail] Set to true to suppress the Order Confirmation email being sent
+	* @param {Array.&lt;String>} [opts.addons] A comma separated list of addons to create on order with the products
+	* @param {Array.&lt;String>} [opts.hostname] The hostname of the server for VPS/Dedicated Server orders
+	* @param {Array.&lt;String>} [opts.ns1prefix] The first nameserver prefix for the VPS/Dedicated server. Eg. ns1 in ns1.hostname.com
+	* @param {Array.&lt;String>} [opts.ns2prefix] The second nameserver prefix for the VPS/Dedicated server. Eg. ns2 in ns2.hostname.com
+	* @param {Array.&lt;String>} [opts.rootpw] The desired root password for the VPS/Dedicated server.
+	* @param {Number} [opts.contactid] The id of the contact, associated with the client, that should apply to all domains in the order
+	* @param {Array.&lt;Boolean>} [opts.dnsmanagement] Add DNS Management to the Domain Order
+	* @param {Array.&lt;String>} [opts.domainfields] an array of base64 encoded serialized array of TLD Specific Field Values
+	* @param {Array.&lt;Boolean>} [opts.emailforwarding] Add Email Forwarding to the Domain Order
+	* @param {Array.&lt;Boolean>} [opts.idprotection] Add ID Protection to the Domain Order
+	* @param {Array.&lt;Number>} [opts.domainpriceoverride] Override the price of the registration price on the domain being ordered
+	* @param {Array.&lt;Number>} [opts.domainrenewoverride] Override the price of the renewal price on the domain being ordered
+	* @param {Array} [opts.domainrenewals] A name -> value array of $domainName -> $renewalPeriod renewals to add an order for
+	* @param {String} [opts.clientip] The ip address to associate with the order
+	* @param {Number} [opts.addonid] The Addon ID for an Addon Only Order
+	* @param {Number} [opts.serviceid] The service ID for the addon only order
+	* @param {Array.&lt;Number>} [opts.addonids] An Array of addon ids for an Addon Only Order
+	* @param {Array.&lt;Number>} [opts.serviceids] An array of service ids to associate the addons for an Addon Only order
+	*/
+	addOrder (opts) {
+		const options = {
+			action: 'AddOrder',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Obtain orders matching the passed criteria - https://developers.whmcs.com/api-reference/getorders/
+	* @param {Object} opts
+	* @param {Number} [opts.limitstart] The offset for the returned order data (default: 0)
+	* @param {Number} [opts.limitnum] The number of records to return (default: 25)
+	* @param {Number} [opts.id] Find orders for a specific id
+	* @param {Number} [opts.userid] Find orders for a specific client id
+	* @param {String} [opts.status] Find orders for a specific status
+	*/
+	getOrders (opts) {
+		const options = {
+			action: 'GetOrders',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Run a fraud check on a passed Order ID - https://developers.whmcs.com/api-reference/orderfraudcheck/
+	* @param {Object} opts
+	* @param {Number} opts.orderid The order id to complete the fraud check on
+	* @param {String} [opts.ipaddress] To override the IP address on the fraud check
+	*/
+	orderFraudCheck (opts) {
+		const options = {
+			action: 'OrderFraudCheck',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Obtain promotions matching the passed criteria - https://developers.whmcs.com/api-reference/getpromotions/
+	* @param {Object} opts
+	* @param {String} [opts.code] Retrieve a specific promotion code. Do not pass to retrieve all
+	*/
+	getPromotions (opts) {
+		const options = {
+			action: 'GetPromotions',
+			...opts
+		}
+		return this.callApi(options)
+	}
+	/**
+	* Removes an order from the system. This cannot be undone. This will remove all items associated with the order (services, addons, domains, invoices etc) - https://developers.whmcs.com/api-reference/deleteorder/
+	* @param {Object} opts
+	* @param {Number} opts.orderid The order to be deleted
+	*/
+	deleteOrder (opts) {
+		const options = {
+			action: 'DeleteOrder',
+			...opts
+		}
+		return this.callApi(options)
+	}
 }
 
 module.exports = Orders
@@ -236,7 +253,7 @@ module.exports = Orders
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Feb 04 2019 10:15:53 GMT+0100 (GMT+01:00)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 17 2019 23:59:38 GMT+0100 (GMT+01:00)
 </footer>
 
 <script> prettyPrint(); </script>
